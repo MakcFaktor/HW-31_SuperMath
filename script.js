@@ -4,49 +4,58 @@ function SuperMath(X, Y, znak) {
     this.znak = znak;
 }
 
-SuperMath.prototype.check = function (obj) {
+
+SuperMath.prototype.check = function () {
     const validOperators = ['+', '-', '/', '*', '%'];
 
-    if (validOperators.includes(obj.znak)) {
-        const confirmMessage = `Ви хочете зробити операцію ${obj.znak} з ${obj.X} і ${obj.Y}? (так/ні)`;
+
+    if (validOperators.includes(this.znak)) {
+        const confirmMessage = `Ви хочете зробити операцію ${this.znak} з ${this.X} і ${this.Y}? (так/ні)`;
         const userConfirm = confirm(confirmMessage);
 
+
         if (userConfirm) {
-            return this.performOperation(obj);
+            return this.performOperation();
         } else {
             const userInput = this.input();
-            return this.check(userInput);
+            return userInput.performOperation();
         }
     } else {
         return 'Недійсний оператор. Укажіть дійсний оператор.';
     }
 };
 
-SuperMath.prototype.performOperation = function (obj) {
-    switch (obj.znak) {
+
+SuperMath.prototype.performOperation = function () {
+    switch (this.znak) {
         case '+':
-            return obj.X + obj.Y;
+            return this.X + this.Y;
         case '-':
-            return obj.X - obj.Y;
+            return this.X - this.Y;
         case '/':
-            return obj.X / obj.Y;
+            return this.X / this.Y;
         case '*':
-            return obj.X * obj.Y;
+            return this.X * this.Y;
         case '%':
-            return obj.X % obj.Y;
+            return this.X % this.Y;
         default:
-            return 'Недійсний оператор';
+            return 'Invalid operator';
     }
 };
+
+
+
 
 SuperMath.prototype.input = function () {
     const newX = parseFloat(prompt('Введіть нове значення для X:'));
     const newY = parseFloat(prompt('Введіть нове значення для Y:'));
     const newZnak = prompt('Введіть дійсний оператор (+, -, /, *, %):');
 
-    return { X: newX, Y: newY, znak: newZnak };
+
+    return new SuperMath(newX, newY, newZnak);
 };
 
+
 const obj = new SuperMath(12, 3, '/');
-const result = obj.check(obj);
+const result = obj.check();
 console.log('Результат:', result);
